@@ -1,0 +1,21 @@
+---
+# tasks file for os_standard
+
+- name: install necessary packages
+  dnf:
+    name: 
+      - wget
+      - open-vm-tools
+      - chrony
+
+- name: Set timezone 
+  community.general.timezone:
+    name: Europe/Warsaw
+
+
+- name: enable NTP
+  systemd:
+    name: chronyd
+    state: restarted
+    enabled: yes
+    masked: no

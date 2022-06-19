@@ -1,0 +1,6 @@
+mini1 ansible_host=192.168.0.15 ansible_ssh_user=root ansible_ssh_pass=Password123!
+mini2 ansible_host=192.168.0.16 ansible_ssh_user=root ansible_ssh_pass=Password123!
+mini3 ansible_host=192.168.0.17 ansible_ssh_user=root ansible_ssh_pass=Password123!
+
+[all:vars]
+
