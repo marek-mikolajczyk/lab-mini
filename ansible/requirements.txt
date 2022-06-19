@@ -1,2 +1,4 @@
 requests
 python-gitlab>=1.5.0
+virtualenv
+setuptools
