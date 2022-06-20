@@ -8,4 +8,4 @@ install_webserver:
 deploy_www_content:
     stage: deploy
     script:
-        - sudo echo "pipeline result v001" > /var/www/html/index.html
+        - echo "pipeline result v001" | sudo tee -a  /var/www/html/index.html
