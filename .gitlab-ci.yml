@@ -1,3 +1,8 @@
+variables:
+    MY_MESSAGE: 
+        value: "custom message"
+        description: "a simple comment"
+
 install_webserver:
     stage: build
     script:
@@ -8,4 +13,5 @@ install_webserver:
 deploy_www_content:
     stage: deploy
     script:
-        - echo 'pipeline result <b>v002<b>' | sudo tee  /var/www/html/index.html
+        - echo 'pipeline result <b>v002</b><p>' | sudo tee  /var/www/html/index.html
+        - echo '<i>$MY_MESSAGE</i>' | sudo tee -a /var/www/html/index.html
