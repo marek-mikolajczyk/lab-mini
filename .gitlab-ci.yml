@@ -1,11 +1,11 @@
 install_webserver:
     stage: build
     script:
-        - dnf install -y httpd
-        - firewall-cmd --add-service=httpd --permanent
-        - firewall-cmd --reload
-        - systemctl enable --now httpd
+        - sudo dnf install -y httpd
+        - sudo firewall-cmd --add-service=httpd --permanent
+        - sudo firewall-cmd --reload
+        - sudo systemctl enable --now httpd
 deploy_www_content:
     stage: deploy
     script:
-        - echo "pipeline result v001" > /var/www/html/index.html
+        - sudo echo "pipeline result v001" > /var/www/html/index.html
