@@ -23,8 +23,8 @@ deploy_www_content-dev:
     stage: deploy-dev
     script:
         - echo 'pipeline result <b>v002</b><p>' | sudo tee  /var/www/html/index.html
-        - echo "<i>$MY_MESSAGE</i>" | sudo tee -a /var/www/html/index.html
-        - echo "CI_PROJECT_NAME $CI_PROJECT_NAME and CI_RUNNER_DESCRIPTION $CI_RUNNER_DESCRIPTION" | sudo tee -a /var/www/html/index.html
+        - echo "<i>$MY_MESSAGE</i><p>" | sudo tee -a /var/www/html/index.html
+        - echo "for project $CI_PROJECT_NAME by CI_RUNNER_DESCRIPTION $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT" | sudo tee -a /var/www/html/index.html
 test_www-dev:
     stage: test-dev
     script:
