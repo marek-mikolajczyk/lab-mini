@@ -2,7 +2,7 @@ install_webserver:
     stage: build
     script:
         - sudo dnf install -y httpd
-        - sudo firewall-cmd --add-service=httpd --permanent
+        - sudo firewall-cmd --add-service=http --permanent
         - sudo firewall-cmd --reload
         - sudo systemctl enable --now httpd
 deploy_www_content:
