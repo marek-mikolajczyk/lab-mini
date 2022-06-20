@@ -1,35 +1,29 @@
----
-# tasks file for gitlab_runner
-
-- name: download file
+- name: downlaod runner binary
   get_url:
-    url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh
-    dest: /tmp/script.rpm.sh
-    mode: '0550'
+    url: https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+    dest: /usr/local/bin/gitlab-runner
+    mode: '0555'
 
-- name: run installer
-  shell: /tmp/script.rpm.sh
-
-- name: install runner
-  dnf:
+- name: Add runner user
+  ansible.builtin.user:
     name: gitlab-runner
-    state: latest
+    comment: GitLab Runner
+    shell: /bin/bash
+    create_home: yes
 
-- name: install python prerequis
-  pip:
-    name:
-      - python-gitlab>=1.5.0 
-      - requests
+- name: configure runner
+  raw: >
+     gitlab-runner stop  ;
+     openssl s_client -connect gitlab.marekexample.com:443 -showcerts </dev/null 2>/dev/null | sed -e '/-----BEGIN/,/-----END/!d' | sudo tee /tmp/gitlab.marekexample.com.crt >/dev/null ;
+     rm -f /etc/systemd/system/gitlab-runner.service ;
 
-#- name: register shared runner
-#  community.general.gitlab_runner:
-#    api_url: https://gitlab.marekexample.com/
-#    api_token: "{{ gitlab_root_access_token }}"
-#    validate_certs: false
-#    registration_token: "{{ gitlab_runner_registration_token }}"
-#    description: runner.marekexample.com
-#    state: present
-#    active: True
-#    tag_list: ['vm', 'server', 'linux']
-#    run_untagged: True
-#    locked: False
+- name: configure runner install
+  raw: >
+     gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner ;
+     gitlab-runner start
+
+- name: configure runner 2
+  raw: >
+     gitlab-runner register --non-interactive --run-untagged --name runner.marekexample.com --url https://gitlab.marekexample.com/ --tls-ca-file=/tmp/gitlab.marekexample.com.crt --executor shell --tag-list vm,linux,server --registration-token {{ gitlab_runner_registration_token }}
+
+

@@ -1,0 +1,35 @@
+---
+# tasks file for gitlab_runner
+
+- name: download file
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh
+    dest: /tmp/script.rpm.sh
+    mode: '0550'
+
+- name: run installer
+  shell: /tmp/script.rpm.sh
+
+- name: install runner
+  dnf:
+    name: gitlab-runner
+    state: latest
+
+- name: install python prerequis
+  pip:
+    name:
+      - python-gitlab>=1.5.0 
+      - requests
+
+- name: register shared runner
+  community.general.gitlab_runner:
+    api_url: https://gitlab.marekexample.com/
+    api_token: "{{ gitlab_root_access_token }}"
+    validate_certs: false
+    registration_token: "{{ gitlab_runner_registration_token }}"
+    description: runner.marekexample.com
+    state: present
+    active: True
+    tag_list: ['vm', 'server', 'linux']
+    run_untagged: True
+    locked: False
