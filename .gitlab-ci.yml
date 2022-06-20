@@ -27,4 +27,4 @@ deploy_www_content-dev:
 test_www-dev:
     stage: test-dev
     script:
-        - curl -k http://runner.marekexample.com | grep "$MY_MESSAGE"
+        - curl -s -k http://runner.marekexample.com | grep "$MY_MESSAGE"
