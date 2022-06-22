@@ -22,12 +22,12 @@ install_webserver:
         - ssh-keyscan "$MY_ENVIRONMENT"1.marekexample.com >> ~/.ssh/known_hosts
         - chmod 644 ~/.ssh/known_hosts
     script:
-        - rsync "$CI_PROJECT_DIR/pipelines/scripts/install_webserver.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
+        - rsync -avrc "pipelines/scripts/install_webserver.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
         - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/install_webserver.sh ; sudo /tmp/install_webserver.sh"
 deploy_www_content:
     stage: deploy
     script:
-        - echo 'pipeline result <b>v002</b><p>' | sudo tee  /var/www/html/index.html
+        - echo 'pipeline result version <b>v002</b><p>' | sudo tee  /var/www/html/index.html
         - echo "<i>$MY_MESSAGE</i><p>" | sudo tee -a /var/www/html/index.html
         - echo "<i>environment $MY_ENVIRONMENT</i>" | sudo tee -a /var/www/html/index.html
         - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
