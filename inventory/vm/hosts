@@ -1,6 +1,8 @@
-gitlab ansible_host=192.168.0.106 ansible_ssh_user=root ansible_ssh_pass=Password123!
-runner ansible_host=192.168.0.107 ansible_ssh_user=root ansible_ssh_pass=Password123!
-tst1 ansible_host=192.168.0.108 ansible_ssh_user=root ansible_ssh_pass=Password123!
+gitlab ansible_host=192.168.0.106 
+runner ansible_host=192.168.0.107 
+tst1 ansible_host=192.168.0.108 
+prod1 ansible_host=192.168.0.109
 
 [all:vars]
-
+ansible_ssh_user=root 
+ansible_ssh_pass=Password123!

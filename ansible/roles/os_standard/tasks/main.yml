@@ -19,3 +19,40 @@
     state: restarted
     enabled: yes
     masked: no
+
+- name: add devops group
+  group:
+    name: devops
+    state: present
+    gid: 1100
+
+- name: add automation group
+  group:
+    name: automation
+    state: present
+    gid: 1101
+
+- name: add automation user
+  user:
+    name: automation
+    comment: 'Automation account'
+    uid: 1101
+    shell: /bin/bash
+    group: automation
+    password: "{{ ssh_password | string | password_hash('sha512')}}"
+    groups: devops
+    append: yes
+
+- name: deploy ansible user authorized key
+  authorized_key:
+    user: automation
+    state: present
+    key: "{{ lookup('file', '../../../vault_id_rsa_mini_automation.pub') }}"
+
+
+- name: deploy sudo for devops group
+  copy:
+    content: '%devops   ALL=(ALL)       NOPASSWD: ALL'
+    dest: /etc/sudoers.d/10-devops
+    mode: '0644'
+    validate: /usr/sbin/visudo -csf %s

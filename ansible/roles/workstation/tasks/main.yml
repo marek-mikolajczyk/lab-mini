@@ -1,0 +1,41 @@
+---
+# tasks file for workstation
+# install python
+# install ssh key configuration
+#
+#
+- name: show pwd
+  shell: pip install -r requirements.txt
+  delegate_to: localhost
+  run_once: yes
+
+
+- name: get list of hosts
+  debug:
+    msg: |
+      Host {% for host in play_hosts -%}
+      {{ host }} {{ host + '.marekexample.com '}}
+       {%- endfor %}
+
+        User automation
+        IdentityFile ~/.ssh/id_rsa_lab_mini
+        
+  run_once: yes
+  register: my_inventory
+
+- name: copy ssh key file
+  copy:
+    content: "{{ lookup('file', '../../../vault_id_rsa_mini_automation') }}\n"
+    dest: ~/.ssh/id_rsa_lab_mini
+    mode: '0600'
+  delegate_to: localhost
+  run_once: yes
+
+- name: configure ssh client
+  blockinfile:
+    path: ~/.ssh/config
+    marker: "###{mark} LAB MINI SSH CONFIG ###"
+    block: |
+      {{ my_inventory.msg }}
+  delegate_to: localhost
+  run_once: yes
