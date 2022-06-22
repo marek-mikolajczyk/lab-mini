@@ -5,7 +5,7 @@ import os
 menu_options = {
     1: 'OS Standarize',
     2: 'Gitlab Runner',
-    3: 'Option 3',
+    3: 'Workstation configure',
     4: 'Exit',
 }
 
@@ -22,7 +22,8 @@ def option2():
      os.system('sh ./script-gitlab_runner.sh')
 
 def option3():
-     print('Handle option \'Option 3\'')
+     print('Configuring workstation')
+     os.system('sh ./script-workstation.sh')
 
 
 if __name__=='__main__':
