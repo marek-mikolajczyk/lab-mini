@@ -25,11 +25,17 @@ install_webserver:
         - rsync -avrc "pipelines/scripts/install_webserver.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
         - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/install_webserver.sh ; sudo /tmp/install_webserver.sh"
 
+prepare_remote_env_vars:
+    stage: build
+    script: 
+        - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee /tmp/env_vars
+
 deploy_www_content:
     stage: deploy
     script:
+        - rsync -avrc "/tmp/env_vars"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
         - rsync -avrc "pipelines/scripts/deploy_www_content.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
-        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/deploy_www_content.sh ; sudo /tmp/deploy_www_content.sh"
+        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "source /tmp/env_vars; chmod +x /tmp/deploy_www_content.sh ; sudo /tmp/deploy_www_content.sh"
 
 deploy_www_content_on_runner:
     stage: deploy
