@@ -3,15 +3,30 @@ variables:
         value: "custom message"
         description: "a simple comment"
 
-install_webserver:
-    stage: build
+stages:
+    - build-dev
+    - build-prod
+    - deploy-dev
+    - deploy-prod
+    - test-dev
+    - test-prod
+
+
+install_webserver-dev:
+    stage: build-dev
     script:
         - sudo dnf install -y httpd
         - sudo firewall-cmd --add-service=http --permanent
         - sudo firewall-cmd --reload
         - sudo systemctl enable --now httpd
-deploy_www_content:
-    stage: deploy
+deploy_www_content-dev:
+    stage: deploy-dev
     script:
         - echo 'pipeline result <b>v002</b><p>' | sudo tee  /var/www/html/index.html
-        - echo "<i>$MY_MESSAGE</i>" | sudo tee -a /var/www/html/index.html
+        - echo "<i>$MY_MESSAGE</i><p>" | sudo tee -a /var/www/html/index.html
+        - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
+        - echo "hosted on $GITLAB_PLATFORM" | sudo tee -a /var/www/html/index.html
+test_www-dev:
+    stage: test-dev
+    script:
+        - curl -s -k http://runner.marekexample.com | grep "$MY_MESSAGE"
