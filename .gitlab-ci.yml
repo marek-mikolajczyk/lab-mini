@@ -24,7 +24,7 @@ deploy_www_content:
     script:
         - echo 'pipeline result <b>v002</b><p>' | sudo tee  /var/www/html/index.html
         - echo "<i>$MY_MESSAGE</i><p>" | sudo tee -a /var/www/html/index.html
-        - echo "<i>environment: $MY_ENVIRONMENT</i>" | sudo tee -a /var/www/html/index.html
+        - echo "<i>environment $MY_ENVIRONMENT</i>" | sudo tee -a /var/www/html/index.html
         - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
         - echo "hosted on $GITLAB_PLATFORM" | sudo tee -a /var/www/html/index.html
 test_www:
