@@ -24,7 +24,14 @@ install_webserver:
     script:
         - rsync -avrc "pipelines/scripts/install_webserver.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
         - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/install_webserver.sh ; sudo /tmp/install_webserver.sh"
+
 deploy_www_content:
+    stage: deploy
+    script:
+        - rsync -avrc "pipelines/scripts/deploy_www_content.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
+        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/deploy_www_content.sh ; sudo /tmp/deploy_www_content.sh"
+
+deploy_www_content_on_runner:
     stage: deploy
     script:
         - echo 'pipeline result version <b>v002</b><p>' | sudo tee  /var/www/html/index.html
