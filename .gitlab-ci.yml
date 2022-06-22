@@ -22,7 +22,7 @@ install_webserver:
         - ssh-keyscan $VM_HOSTNAME >> ~/.ssh/known_hosts
         - chmod 644 ~/.ssh/known_hosts
     script:
-        - ssh $SSH_AUTOMATION_USER@$VM_IPADDRESS "hostname && echo 'Welcome!!!' > welcome.txt"
+        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "hostname && echo 'Welcome!!!' > welcome.txt"
 deploy_www_content:
     stage: deploy
     script:
