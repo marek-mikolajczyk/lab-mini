@@ -35,7 +35,7 @@ deploy_www_content:
     script:
         - rsync -avrc "/tmp/env_vars"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
         - rsync -avrc "pipelines/scripts/deploy_www_content.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
-        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "source /tmp/env_vars; chmod +x /tmp/deploy_www_content.sh ; sudo /tmp/deploy_www_content.sh"
+        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com 'sudo source /tmp/env_vars;  chmod +x /tmp/deploy_www_content.sh ; sudo /tmp/deploy_www_content.sh"
 
 deploy_www_content_on_runner:
     stage: deploy
