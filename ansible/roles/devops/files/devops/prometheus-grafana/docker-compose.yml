@@ -4,9 +4,11 @@ volumes:
     prometheus_data: {}
     grafana_data: {}
 
+
 networks:
   front-tier:
   back-tier:
+
 
 services:
 
@@ -35,9 +37,9 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
       - /:/host:ro,rslave
-    command: 
+    command:
       - '--path.rootfs=/host'
-      - '--path.procfs=/host/proc' 
+      - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
@@ -49,13 +51,11 @@ services:
 
 
   alertmanager:
-    image: quay.io/prometheus/alertmanager
+    image: prom/alertmanager
     ports:
       - 9093:9093
     volumes:
       - ./alertmanager/config:/etc/alertmanager/
-    networks:
-      - back-tier
     restart: always
     command:
       - '--config.file=/etc/alertmanager/config.yml'
@@ -76,5 +76,4 @@ services:
       - ./grafana/config/monitoring
     networks:
       - back-tier
-      - front-tier
     restart: always

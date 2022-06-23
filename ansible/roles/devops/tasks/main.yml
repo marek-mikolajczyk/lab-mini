@@ -12,6 +12,11 @@
     dest: /etc/yum.repos.d/
     mode: '0644'
 
+- name: disable firewalld
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped
 
 - name: install docker packages
   dnf:
@@ -26,8 +31,13 @@
   systemd:
     name: docker
     enabled: yes
-    state: started
+    state: restarted
 
+- name: install docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: '0555'
 
 - name: prepare devops root dir
   file:
