@@ -27,3 +27,19 @@
     name: docker
     enabled: yes
     state: started
+
+
+- name: prepare devops root dir
+  file:
+    path: /devops
+    state: directory
+    mode: '0775'
+
+
+- name: deploy apps configurations
+  synchronize:
+    src: devops
+    dest: / 
+
+
+   
