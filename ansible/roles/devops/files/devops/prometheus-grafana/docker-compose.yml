@@ -58,3 +58,13 @@ services:
     networks:
       - back-tier
     restart: always
+
+  vmware_exporter:
+    image: pryorda/vmware_exporter:latest
+    ports:
+    - 9272:9272
+    environment:
+      VSPHERE_HOST: 192.168.0.18
+      VSPHERE_IGNORE_SSL: True
+      VSPHERE_USER: Administrator@vsphere.local
+      VSPHERE_PASSWORD: "Password123!"
