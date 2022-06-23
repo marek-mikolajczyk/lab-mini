@@ -2,6 +2,7 @@ gitlab ansible_host=192.168.0.106
 runner ansible_host=192.168.0.107 
 tst1 ansible_host=192.168.0.108 
 prod1 ansible_host=192.168.0.109
+devops ansible_host=192.168.0.110
 
 [all:vars]
 ansible_ssh_user=root 
