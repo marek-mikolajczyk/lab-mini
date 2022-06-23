@@ -6,7 +6,8 @@ menu_options = {
     1: 'OS Standarize',
     2: 'Gitlab Runner',
     3: 'Workstation configure',
-    4: 'Exit',
+    4: 'Server Devops configure',
+    5: 'Exit',
 }
 
 def print_menu():
@@ -26,6 +27,10 @@ def option3():
      os.system('sh ./script-workstation.sh')
 
 
+def option4():
+     print('Configuring devops server ')
+     os.system('sh ./script-devops.sh')
+
 if __name__=='__main__':
     while(True):
         print_menu()
@@ -42,7 +47,9 @@ if __name__=='__main__':
         elif option == 3:
             option3()
         elif option == 4:
+            option4()
+        elif option == 5:
             print('Thanks message before exiting')
             exit()
         else:
-            print('Invalid option. Please enter a number between 1 and 4.')
+            print('Invalid option. Please enter a number between 1 and 5.')

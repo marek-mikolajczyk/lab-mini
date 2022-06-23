@@ -1,0 +1,6 @@
+- name: configure devops server
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - name: devops

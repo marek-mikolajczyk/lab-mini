@@ -1,0 +1,29 @@
+---
+# tasks file for devops
+#
+- name: install dependencies
+  dnf:
+    name: yum-utils
+    state: present
+
+- name: add docker repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/
+    mode: '0644'
+
+
+- name: install docker packages
+  dnf:
+    name:
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-compose-plugin
+    state: present
+
+- name: enable docker service
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
