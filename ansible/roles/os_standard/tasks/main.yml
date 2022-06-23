@@ -7,6 +7,8 @@
       - wget
       - open-vm-tools
       - chrony
+      - zip
+      - unzip
 
 - name: Set timezone 
   community.general.timezone:
@@ -56,3 +58,58 @@
     dest: /etc/sudoers.d/10-devops
     mode: '0644'
     validate: /usr/sbin/visudo -csf %s
+
+- name: add node_exporter group
+  group:
+    name: node_exporter
+    state: present
+    gid: 1102
+
+- name: install node_exporter for prometheus
+  user:
+    name: node_exporter
+    comment: 'Node Exporter for Prometheus'
+    uid: 1102
+    shell: /bin/false
+    group: node_exporter 
+    system: yes
+    create_home: no
+
+- name: download node exporter binary
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: unarchive node exporter binary
+  unarchive:
+    src: /tmp/node_exporter-1.3.1.linux-amd64.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: copy node_exporter binary
+  copy:
+    src: /tmp/node_exporter-1.3.1.linux-amd64/node_exporter
+    dest: /usr/local/bin/node_exporter
+    remote_src: yes
+    owner: node_exporter
+    group: node_exporter
+    mode: '0555'
+
+- name: copy node_exporter systemd
+  copy:
+    src: node_exporter/node_exporter.service
+    dest: /etc/systemd/system/node_exporter.service
+
+- name: start node_exporter
+  systemd:
+    name: node_exporter
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+
+- name: enable firewalld
+  firewalld:
+    port: 9100/tcp
+    permanent: yes
+    state: enabled
+  ignore_errors: yes
