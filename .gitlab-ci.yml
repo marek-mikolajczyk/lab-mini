@@ -27,6 +27,7 @@ install_webserver:
     script:
         - rsync -avrc "pipelines/scripts/install_webserver.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
         - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/install_webserver.sh ; sudo /tmp/install_webserver.sh"
+    
 
 prepare_remote_env_vars:
     stage: build
@@ -35,6 +36,10 @@ prepare_remote_env_vars:
         url: http://"$MY_ENVIRONMENT"1.marekexample.com
     script: 
         - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee /tmp/env_vars
+    artifacts:
+        name: my_result
+        paths:
+            - /tmp/env_vars
 
 deploy_www_content:
     stage: deploy
@@ -51,10 +56,7 @@ deploy_www_content_on_runner:
         - echo "<i>environment $MY_ENVIRONMENT</i>" | sudo tee -a /var/www/html/index.html
         - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
         - echo "hosted on $GITLAB_PLATFORM" | sudo tee -a /var/www/html/index.html
-    artifacts:
-        name: my_result
-        paths:
-            - "/tmp/$CI_JOB_NAME"
+
 
 
 test_www:
