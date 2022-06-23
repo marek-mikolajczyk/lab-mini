@@ -5,6 +5,7 @@
   dnf:
     name: 
       - wget
+      - telnet
       - open-vm-tools
       - chrony
       - zip
@@ -112,4 +113,5 @@
     port: 9100/tcp
     permanent: yes
     state: enabled
+    immediate: yes
   ignore_errors: yes
