@@ -51,6 +51,12 @@ deploy_www_content_on_runner:
         - echo "<i>environment $MY_ENVIRONMENT</i>" | sudo tee -a /var/www/html/index.html
         - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
         - echo "hosted on $GITLAB_PLATFORM" | sudo tee -a /var/www/html/index.html
+    artifacts:
+        name: my_result
+        paths:
+            - "/tmp/$CI_JOB_NAME"
+
+
 test_www:
     stage: test
     script:
