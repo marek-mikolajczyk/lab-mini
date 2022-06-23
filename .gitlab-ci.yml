@@ -39,7 +39,7 @@ prepare_remote_env_vars:
     artifacts:
         name: my_result
         paths:
-            - env_vars
+            - artifacts/env_vars
 
 deploy_www_content:
     stage: deploy
