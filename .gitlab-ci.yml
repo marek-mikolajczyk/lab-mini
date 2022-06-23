@@ -14,6 +14,9 @@ stages:
 
 install_webserver:
     stage: build
+    environment:
+        name: "$MY_ENVIRONMENT1"
+        url: http://"$MY_ENVIRONMENT"1.marekexample.com
     before_script:
         - eval $(ssh-agent -s)
         - echo "$SSH_AUTOMATION_PRIVKEY" | tr -d '\r' | ssh-add -
@@ -27,6 +30,9 @@ install_webserver:
 
 prepare_remote_env_vars:
     stage: build
+    environment:
+        name: "$MY_ENVIRONMENT1"
+        url: http://"$MY_ENVIRONMENT"1.marekexample.com
     script: 
         - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee /tmp/env_vars
 
