@@ -36,7 +36,6 @@ prepare_remote_env_vars:
         url: http://"$MY_ENVIRONMENT"1.marekexample.com
     script: 
         - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee /tmp/env_vars
-        - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee artifacts/env_vars
     artifacts:
         name: my_result
         paths:
