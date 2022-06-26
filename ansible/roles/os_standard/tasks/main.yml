@@ -10,6 +10,7 @@
       - chrony
       - zip
       - unzip
+      - git
 
 - name: Set timezone 
   community.general.timezone:
