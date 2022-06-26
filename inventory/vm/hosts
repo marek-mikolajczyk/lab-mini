@@ -10,3 +10,14 @@ k8-worker2 ansible_host=192.168.0.114
 [all:vars]
 ansible_ssh_user=root 
 ansible_ssh_pass=Password123!
+
+[k8:children]
+k8-master
+k8-worker
+
+[k8-master]
+k8-master1
+
+[k8-worker]
+k8-worker1
+k8-worker2
