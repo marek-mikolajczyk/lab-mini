@@ -3,6 +3,9 @@ runner ansible_host=192.168.0.107
 tst1 ansible_host=192.168.0.108 
 prod1 ansible_host=192.168.0.109
 devops ansible_host=192.168.0.110
+k8-master1 ansible_host=192.168.0.112
+k8-worker1 ansible_host=192.168.0.113
+k8-worker2 ansible_host=192.168.0.114
 
 [all:vars]
 ansible_ssh_user=root 

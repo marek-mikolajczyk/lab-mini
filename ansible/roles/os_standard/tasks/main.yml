@@ -1,6 +1,14 @@
 ---
 # tasks file for os_standard
 
+- name: configure hosts file
+  blockinfile:
+    path: /etc/hosts
+    marker: "###{mark} LAB MINI HOSTS ###"
+    block: |
+      {% for host in play_hosts %}
+      {{ hostvars[host]['ansible_default_ipv4']['address'] }} {{ host + '.marekexample.com' }} {{ host }}
+      {% endfor %}
 - name: install necessary packages
   dnf:
     name: 
@@ -116,3 +124,4 @@
     state: enabled
     immediate: yes
   ignore_errors: yes
+

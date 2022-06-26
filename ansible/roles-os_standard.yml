@@ -1,6 +1,6 @@
 - name: standarize servers
   hosts: all
   become: true
-  gather_facts: false
+  gather_facts: true
   roles:
     - name: os_standard
