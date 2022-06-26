@@ -4,6 +4,19 @@
 # install ssh key configuration
 #
 #
+#
+- name: configure hosts file
+  blockinfile:
+    path: /etc/hosts
+    marker: "###{mark} LAB MINI HOSTS ###"
+    block: |
+      {% for host in play_hosts %}
+      {{ hostvars[host]['ansible_host']}} {{ host + '.marekexample.com' }} {{ host }}
+      {% endfor %}
+  delegate_to: localhost
+  run_once: yes
+
+
 - name: show pwd
   shell: pip install -r requirements.txt
   delegate_to: localhost

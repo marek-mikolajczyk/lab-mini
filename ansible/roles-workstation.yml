@@ -1,6 +1,6 @@
 - name: configure workstation
   hosts: all
-  become: false
+  become: true
   gather_facts: false
   roles:
     - name: workstation
