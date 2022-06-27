@@ -1,0 +1,15 @@
+- name: fix bug
+  shell: |
+    rm /etc/containerd/config.toml
+    systemctl restart containerd
+
+- name: run kubeinit
+  shell: kubeadm init
+  register: init_of_kubeadm
+
+
+- name: configure control plane
+  shell: |
+      mkdir -p $HOME/.kube
+      cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      chown $(id -u):$(id -g) $HOME/.kube/config

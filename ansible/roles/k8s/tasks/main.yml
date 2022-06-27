@@ -1,2 +1,78 @@
 ---
 # tasks file for k8s
+- name: Disable SELinux
+  selinux: 
+    policy: targeted
+    state: permissive
+
+- name: Disable SELinux 2
+  replace:
+    path: /etc/sysconfig/selinux
+    regexp: '^SELINUX=*'
+    replace: SELINUX=permissive
+
+- name: disable firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: False
+
+- name: enable kernel module
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: enable bridge nf calls
+  shell: echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: install kubernetes repo
+  copy:
+    src: kubernetes.repo
+    dest: /etc/yum.repos.d/
+    mode: '0644'
+    owner: root
+
+
+- name: install kubeadm
+  dnf:
+    name: 
+      - kubeadm
+      - iproute-tc
+    state: present
+
+- name: fix bug
+  shell: |
+    rm /etc/containerd/config.toml
+    systemctl restart containerd
+
+
+- name: start kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+
+- name: configure nfs
+  file:
+    path: "/k8s-{{item}}-{{inventory_hostname}}"
+    state: directory
+    mode: '0777'
+  loop:
+    - nfs
+    - local
+
+- name: start nfs
+  systemd:
+    name: nfs-server
+    enabled: yes
+    state: started
+
+- name: configure exports
+  blockinfile:
+    path: /etc/exports
+    block: |
+      /k8s-nfs-{{inventory_hostname}} *(rw,sync)
+
+- name: refresh exports
+  shell: exportfs -avr
+

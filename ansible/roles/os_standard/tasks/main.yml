@@ -11,6 +11,9 @@
       {% endfor %}
 
 
+- name: set hostname
+  shell: hostnamectl set-hostname --static {{ inventory_hostname }}.marekexample.com
+
 - name: install necessary packages
   dnf:
     name: 
@@ -21,6 +24,7 @@
       - zip
       - unzip
       - git
+      - nfs-utils
 
 - name: Set timezone 
   community.general.timezone:

@@ -1,7 +1,7 @@
-- name: configure devops server
+- name: configure k8s cluster
   hosts: all
   become: true
   gather_facts: false
   roles:
     - install_docker
-    - devops
+    - k8s

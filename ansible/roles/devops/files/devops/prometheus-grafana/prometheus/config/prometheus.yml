@@ -25,9 +25,9 @@ scrape_configs:
     - targets: ['tst1.marekexample.com:9100']
     - targets: ['runner.marekexample.com:9100']
     - targets: ['devops.marekexample.com:9100']
-    - targets: ['k8-master1.marekexample.com:9100']
-    - targets: ['k8-worker1.marekexample.com:9100']
-    - targets: ['k8-worker2.marekexample.com:9100']
+    - targets: ['k8s-master1.marekexample.com:9100']
+    - targets: ['k8s-worker1.marekexample.com:9100']
+    - targets: ['k8s-worker2.marekexample.com:9100']
 
 
   - job_name: 'vmware_vcenter'

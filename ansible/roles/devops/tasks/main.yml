@@ -1,44 +1,6 @@
 ---
 # tasks file for devops
 #
-- name: install dependencies
-  dnf:
-    name: yum-utils
-    state: present
-
-- name: add docker repository
-  get_url:
-    url: https://download.docker.com/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/
-    mode: '0644'
-
-- name: disable firewalld
-  systemd:
-    name: firewalld
-    enabled: no
-    state: stopped
-
-- name: install docker packages
-  dnf:
-    name:
-      - docker-ce 
-      - docker-ce-cli 
-      - containerd.io 
-      - docker-compose-plugin
-    state: present
-
-- name: enable docker service
-  systemd:
-    name: docker
-    enabled: yes
-    state: restarted
-
-- name: install docker-compose
-  get_url:
-    url: https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64
-    dest: /usr/local/bin/docker-compose
-    mode: '0555'
-
 - name: prepare devops root dir
   file:
     path: /devops
