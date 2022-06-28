@@ -28,6 +28,7 @@
   loop:
     - prometheus-grafana
     - hashicorp-vault
+    - elk
 
 
 - name: restart docker-compose
@@ -35,3 +36,4 @@
   loop:
     - prometheus-grafana
     - hashicorp-vault
+    - elk
