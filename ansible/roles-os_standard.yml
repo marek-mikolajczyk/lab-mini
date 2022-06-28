@@ -1,5 +1,7 @@
 - name: standarize servers
   hosts: all
+  vars_files:
+    - linux_packages.yml
   become: true
   gather_facts: true
   roles:

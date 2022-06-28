@@ -16,15 +16,7 @@
 
 - name: install necessary packages
   dnf:
-    name: 
-      - wget
-      - telnet
-      - open-vm-tools
-      - chrony
-      - zip
-      - unzip
-      - git
-      - nfs-utils
+    name: "{{ linux_packages }}"
 
 - name: Set timezone 
   community.general.timezone:

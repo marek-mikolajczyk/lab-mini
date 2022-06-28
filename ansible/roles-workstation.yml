@@ -1,5 +1,7 @@
 - name: configure workstation
   hosts: all
+  vars_files:
+    - linux_packages.yml
   become: true
   gather_facts: false
   roles:

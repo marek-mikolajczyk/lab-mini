@@ -1,0 +1,14 @@
+linux_packages:
+  - wget
+  - telnet
+  - open-vm-tools
+  - chrony
+  - zip
+  - unzip
+  - git
+  - net-tools
+  - nmap
+
+# centos specific
+# bind-utils
+# nfs-utils

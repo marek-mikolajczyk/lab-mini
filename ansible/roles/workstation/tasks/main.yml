@@ -5,7 +5,13 @@
 #
 #
 #
-- name: configure env vars 1
+- name: install necessary packages
+  package:
+    name: "{{ linux_packages }}"
+  delegate_to: localhost
+  run_once: yes
+
+- name: configure env vars in bashrc file
   blockinfile:
     path: ~/.bashrc
     marker: "###{mark} LAB MINI ENV VARS ###"
@@ -13,8 +19,9 @@
 
       {% for item in (secret_vars | dict2items ) %}
       export {{ item.key | upper }}={{ item.value }}
-
       {% endfor %}
+
+
   become: false
   delegate_to: localhost
   run_once: yes
@@ -32,7 +39,7 @@
   run_once: yes
 
 
-- name: show pwd
+- name: install pip requirements
   shell: pip install -r requirements.txt
   become: false
   delegate_to: localhost
