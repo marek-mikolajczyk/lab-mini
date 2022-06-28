@@ -1,6 +1,16 @@
 ---
 # tasks file for devops
 #
+- name: configure env vars in bashrc file
+  blockinfile:
+    path: ~/.bashrc
+    marker: "###{mark} LAB MINI ENV VARS ###"
+    block: |
+
+      {% for item in (secret_vars | dict2items ) %}
+      export {{ item.key | upper }}={{ item.value }}
+      {% endfor %}
+
 - name: prepare devops root dir
   file:
     path: /devops
@@ -13,5 +23,15 @@
     src: devops
     dest: / 
 
-- name: restart docker-compose prometheus-grafana
-  shell: /usr/local/bin/docker-compose -f /devops/prometheus-grafana/docker-compose.yml restart
+- name: start docker-compose 
+  shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml up -d
+  loop:
+    - prometheus-grafana
+    - hashicorp-vault
+
+
+- name: restart docker-compose
+  shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml restart
+  loop:
+    - prometheus-grafana
+    - hashicorp-vault
