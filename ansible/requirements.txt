@@ -3,3 +3,4 @@ python-gitlab>=1.5.0
 virtualenv
 setuptools
 pyyaml
+https://releases.ansible.com/ansible-tower/cli/ansible-tower-cli-latest.tar.gz
