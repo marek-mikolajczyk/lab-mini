@@ -24,6 +24,6 @@
 
 - name: configure runner 2
   raw: >
-     gitlab-runner register --non-interactive --run-untagged --name runner.marekexample.com --url https://gitlab.marekexample.com/ --tls-ca-file=/tmp/gitlab.marekexample.com.crt --executor shell --tag-list vm,linux,server --registration-token {{ gitlab_runner_registration_token }}
+     gitlab-runner register --non-interactive --run-untagged --name runner.marekexample.com --url https://gitlab.marekexample.com/ --tls-ca-file=/tmp/gitlab.marekexample.com.crt --executor shell --tag-list vm,linux,server --registration-token {{ secret_vars.gitlab_runner_registration_token }}
 
 

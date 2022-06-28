@@ -57,7 +57,7 @@
     uid: 1101
     shell: /bin/bash
     group: automation
-    password: "{{ ssh_password | string | password_hash('sha512')}}"
+    password: "{{ secret_vars.ssh_password | string | password_hash('sha512')}}"
     groups: devops
     append: yes
 
