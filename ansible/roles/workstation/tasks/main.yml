@@ -12,7 +12,7 @@
     block: |
 
       {% for item in (secret_vars | dict2items ) %}
-      export {{ item.key | upper}}={{ item.value  }}
+      export {{ item.key | upper }}={{ item.value }}
 
       {% endfor %}
   become: false
