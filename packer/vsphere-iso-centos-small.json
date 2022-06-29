@@ -1,0 +1,54 @@
+{
+
+ "variables": {
+    "vsphere_username": "{{env `VSPHERE_USERNAME`}}",
+    "vsphere_password": "{{env `VSPHERE_PASSWORD`}}",
+    "ssh_password": "{{env `SSH_PASSWORD`}}"
+  },
+
+ "builders": [{
+  "type": "vsphere-iso",
+  "vcenter_server": "vsphere.marekexample.com",
+  "username": "{{user `vsphere_username`}}",
+  "password": "{{user `vsphere_password`}}",
+  "insecure_connection": true,
+  "datacenter": "datacenter1",
+  "cluster": "cluster1", 
+  "host": "mini1.marekexample.com",
+  "datastore": "mini1-datastore-nvme",
+
+
+  "cd_files" : ["./ks-vsphere-iso-centos.cfg"],
+  "cd_label" : "supportfiles",
+  "vm_name": "vsphere-iso-centos-small.marekexample.com",
+  "guest_os_type": "rhel8_64Guest",
+  "CPUs": 1,
+  "cpu_cores": 2,
+  "RAM": 2048,
+  "iso_paths": [
+        "[synology-mini-iso] ISO/Rocky-8.5-x86_64-minimal.iso"
+      ],
+  "network_adapters": [
+        {
+          "network": "VM Network",
+          "network_card": "vmxnet3"
+        }
+      ],
+ "storage": [
+        {
+          "disk_size": 10000,
+          "disk_thin_provisioned": true
+        }
+      ],
+  "boot_wait": "5s",
+  "boot_order":"disk,cdrom",
+  "boot_command": [
+      "<up><esc><wait>",
+      "linux inst.ks=cdrom:/ks-vsphere-iso-centos.cfg <enter>"
+    ],
+  "shutdown_command": "shutdown -P now",
+  "ssh_username": "root",
+  "ssh_password": "{{ user `ssh_password`}}",
+  "convert_to_template": true
+}]
+}

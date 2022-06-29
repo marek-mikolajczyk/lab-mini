@@ -20,11 +20,11 @@
 
   "cd_files" : ["./ks-vsphere-iso-centos.cfg"],
   "cd_label" : "supportfiles",
-  "vm_name": "vsphere-iso-centos.marekexample.com",
+  "vm_name": "vsphere-iso-centos-medium.marekexample.com",
   "guest_os_type": "rhel8_64Guest",
-  "CPUs": 1,
-  "cpu_cores": 2,
-  "RAM": 2048,
+  "CPUs": 2,
+  "cpu_cores": 4,
+  "RAM": 4096,
   "iso_paths": [
         "[synology-mini-iso] ISO/Rocky-8.5-x86_64-minimal.iso"
       ],
