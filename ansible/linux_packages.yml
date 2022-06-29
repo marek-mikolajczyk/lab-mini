@@ -8,6 +8,7 @@ linux_packages:
   - git
   - net-tools
   - nmap
+  - mkisofs
 
 # centos specific
 # bind-utils
