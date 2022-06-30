@@ -6,10 +6,10 @@ include:
     rules:
       - if: $PIPELINE_ACTION == "webserver_simple"
 
-stages:
-    - build
-    - deploy
-    - test
+#stages:
+#- build
+#   - deploy
+#   - test
 
 job:
   script:
