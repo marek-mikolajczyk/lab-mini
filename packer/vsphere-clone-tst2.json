@@ -1,0 +1,36 @@
+ {
+ "variables": {
+    "vsphere_username": "{{env `VSPHERE_USERNAME`}}",
+    "vsphere_password": "{{env `VSPHERE_PASSWORD`}}",
+    "ssh_password": "{{env `SSH_PASSWORD`}}"
+  },
+
+  "builders": [
+    {
+      "type": "vsphere-clone",
+
+      "vcenter_server":      "vsphere.marekexample.com",
+      "username":            "{{ user `vsphere_username`}}",
+      "password":            "{{ user `vsphere_password`}}",
+      "insecure_connection": "true",
+
+      "template": "vsphere-iso-centos-small.marekexample.com",
+      "datastore": "mini2-datastore-nvme",
+      "cluster": "cluster1",
+      "vm_name":  "tst2.marekexample.com",
+
+      "communicator": "ssh",
+      "ssh_username": "root",
+      "ssh_password": "{{ user `ssh_password` }}"
+    }
+   ],
+
+  "provisioners": [
+    {
+      "inline": [
+        "touch /tmp/i-was-created-by-packer"
+      ],
+      "type": "shell"
+    }
+  ]
+}
