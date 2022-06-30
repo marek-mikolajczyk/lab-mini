@@ -2,6 +2,9 @@ include:
   - local: /pipelines/templates/webserver_extended.yml
     rules:
       - if: $PIPELINE_ACTION == "webserver_extended"
+  - local: /pipelines/templates/webserver_simple.yml
+    rules:
+      - if: $PIPELINE_ACTION == "webserver_simple"
 
 stages:
     - build
