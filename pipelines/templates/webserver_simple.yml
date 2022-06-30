@@ -1,0 +1,72 @@
+# this template deploys apache with simple index.html
+# deployment is done via runner to tst or prod server using ssh
+# pipeline uses instance variables, project variables and pipeline variables
+#
+#
+variables:
+    MY_MESSAGE: 
+        value: "custom message"
+        description: "a simple comment"
+    MY_ENVIRONMENT: 
+        value: "tst"
+        description: "a simple comment"
+
+stages:
+    - build
+    - deploy
+    - test
+
+
+install_webserver:
+    stage: build
+    environment:
+        name: $MY_ENVIRONMENT
+        url: http://"$MY_ENVIRONMENT"1.marekexample.com
+    before_script:
+        - eval $(ssh-agent -s)
+        - echo "$SSH_AUTOMATION_PRIVKEY" | tr -d '\r' | ssh-add -
+        - mkdir ~/.ssh -p
+        - chmod 700 ~/.ssh
+        - ssh-keyscan "$MY_ENVIRONMENT"1.marekexample.com >> ~/.ssh/known_hosts
+        - chmod 644 ~/.ssh/known_hosts
+    script:
+        - rsync -avrc "pipelines/scripts/install_webserver.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
+        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "chmod +x /tmp/install_webserver.sh ; sudo /tmp/install_webserver.sh"
+    
+
+prepare_remote_env_vars:
+    stage: build
+    environment:
+        name: "$MY_ENVIRONMENT"
+        url: http://"$MY_ENVIRONMENT"1.marekexample.com
+    script: 
+        - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee /tmp/env_vars
+        - echo "export MY_ENVIRONMENT=$MY_ENVIRONMENT" | tee artifacts/env_vars
+    artifacts:
+        name: my_result
+        paths:
+            - artifacts/env_vars
+
+deploy_www_content:
+    stage: deploy
+    script:
+        - rsync -avrc "/tmp/env_vars"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
+        - rsync -avrc "pipelines/scripts/deploy_www_content.sh"  "$SSH_AUTOMATION_USER"@"$MY_ENVIRONMENT"1.marekexample.com:/tmp/.
+        - ssh $SSH_AUTOMATION_USER@$"$MY_ENVIRONMENT"1.marekexample.com "sudo su -c 'source /tmp/env_vars;  chmod +x /tmp/deploy_www_content.sh ; /tmp/deploy_www_content.sh'"
+
+deploy_www_content_on_runner:
+    stage: deploy
+    script:
+        - echo 'pipeline result version <b>v002</b><p>' | sudo tee  /var/www/html/index.html
+        - echo "<h1>SIMPLE webserver</h1><p>" | sudo tee -a /var/www/html/index.html
+        - echo "<i>$MY_MESSAGE</i><p>" | sudo tee -a /var/www/html/index.html
+        - echo "<i>environment $MY_ENVIRONMENT</i>" | sudo tee -a /var/www/html/index.html
+        - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
+        - echo "hosted on $GITLAB_PLATFORM" | sudo tee -a /var/www/html/index.html
+
+
+
+test_www:
+    stage: test
+    script:
+        - curl -s -k http://runner.marekexample.com | grep "$MY_MESSAGE"

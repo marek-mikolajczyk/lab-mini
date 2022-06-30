@@ -1,0 +1,6 @@
+# this pipeline has steps:
+# 1. create vsphere vm from template small
+# 2. installas ansible
+# 3. calls os_standard role
+#
+# this template is used to practice includes
