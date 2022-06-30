@@ -7,3 +7,7 @@ stages:
     - build
     - deploy
     - test
+
+job:
+  script:
+    - echo "executing pipeline $PIPELINE_ACTION"
