@@ -29,6 +29,10 @@ DNS.1 = alt1.marekexample.com
 
 EOF
 
+if [ -z "$2" ]
+  echo "DNS.1 = $2.marekexample.com" >> ../server/"$1".marekexample.com/"$1".marekexample.com.cnf
+fi
+
 openssl req -new -key ../server/"$1".marekexample.com/"$1".marekexample.com.key \
   -out ../server/"$1".marekexample.com/"$1".marekexample.com.csr \
   -config ../server/"$1".marekexample.com/"$1".marekexample.com.cnf
