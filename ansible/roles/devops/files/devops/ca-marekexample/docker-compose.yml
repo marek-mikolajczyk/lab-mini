@@ -5,6 +5,6 @@ services:
     build:
       context: docker/
     volumes:
-      - ./files-marekexample:/files-marekexample:z
+      - ./files-marekexample:/certificates:z
     ports:
     - "5999:80"
