@@ -19,9 +19,10 @@
 
 
 - name: deploy apps configurations
-  synchronize:
+  copy:
     src: devops
     dest: / 
+    decrypt: yes
 
 - name: start docker-compose 
   shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml up -d
