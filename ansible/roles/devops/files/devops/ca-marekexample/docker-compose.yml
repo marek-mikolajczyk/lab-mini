@@ -3,7 +3,7 @@ version: '3.7'
 services:
   ca-marekexample:
     build:
-      context: docker/
+      context: .
     volumes:
       - ./files-marekexample:/certificates:z
     ports:
