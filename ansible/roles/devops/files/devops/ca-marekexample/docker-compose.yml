@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  ca-marekexample:
+    build:
+      context: docker/
+    volumes:
+      - ca-marekexample:/usr/share/ca-marekexample/data:z
+      discovery.type: single-node
