@@ -1,11 +1,16 @@
 #!/bin/bash
 
-# script accepts $1 as CN/servername
+# script accepts $1 as CN/servername and $2 as SAN
 
 mkdir -p ../server/"$1".marekexample.com/
 openssl genrsa -out ../server/"$1".marekexample.com/"$1".marekexample.com.key 2048
 
 
+if [ -v 2 ]; then
+  SAN=$2
+else
+  SAN=$1
+fi
 
 cat <<  EOF > ../server/"$1".marekexample.com/"$1".marekexample.com.cnf
 [req]
@@ -25,13 +30,12 @@ CN  = $1.marekexample.com
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = alt1.marekexample.com
-
+DNS.1 = $SAN.marekexample.com
 EOF
 
-if [ -z "$2" ]
-  echo "DNS.1 = $2.marekexample.com" >> ../server/"$1".marekexample.com/"$1".marekexample.com.cnf
-fi
+
+#[ -v 2 ] && echo "DNS.1 = $2.marekexample.com" >> ../server/"$1".marekexample.com/"$1".marekexample.com.cnf \
+#[ -v 2 ] && echo "DNS.1 = $2.marekexample.com" >> ../server/"$1".marekexample.com/"$1".marekexample.com.cnf \
 
 openssl req -new -key ../server/"$1".marekexample.com/"$1".marekexample.com.key \
   -out ../server/"$1".marekexample.com/"$1".marekexample.com.csr \
