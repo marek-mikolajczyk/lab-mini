@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# script accepts $1 as CN/servername and $2 as SAN
+# script accepts $1 as $WEB_DIR/servername and $2 as SAN
 
-mkdir -p ../server/"$1".marekexample.com/
-openssl genrsa -out ../server/"$1".marekexample.com/"$1".marekexample.com.key 2048
+WEB_DIR=/var/www/localhost/htdocs/certificates
+mkdir -p $WEB_DIR/server/"$1".marekexample.com/
+openssl genrsa -out $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.key 2048
 
 
 if [ -v 2 ]; then
@@ -12,7 +13,7 @@ else
   SAN=$1
 fi
 
-cat <<  EOF > ../server/"$1".marekexample.com/"$1".marekexample.com.cnf
+cat <<  EOF > $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.cnf
 [req]
 distinguished_name = req_distinguished_name
 req_extensions = req_ext
@@ -34,9 +35,9 @@ DNS.1 = $SAN.marekexample.com
 EOF
 
 
-#[ -v 2 ] && echo "DNS.1 = $2.marekexample.com" >> ../server/"$1".marekexample.com/"$1".marekexample.com.cnf \
-#[ -v 2 ] && echo "DNS.1 = $2.marekexample.com" >> ../server/"$1".marekexample.com/"$1".marekexample.com.cnf \
+#[ -v 2 ] && echo "DNS.1 = $2.marekexample.com" >> $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.cnf \
+#[ -v 2 ] && echo "DNS.1 = $2.marekexample.com" >> $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.cnf \
 
-openssl req -new -key ../server/"$1".marekexample.com/"$1".marekexample.com.key \
-  -out ../server/"$1".marekexample.com/"$1".marekexample.com.csr \
-  -config ../server/"$1".marekexample.com/"$1".marekexample.com.cnf
+openssl req -new -key $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.key \
+  -out $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.csr \
+  -config $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.cnf
