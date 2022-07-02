@@ -4,7 +4,7 @@
 #
 #
 variables:
-    MY_SERVER: 
+    MY_SERVER: "none"
 
 stages:
     - build
