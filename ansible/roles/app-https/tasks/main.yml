@@ -1,0 +1,32 @@
+---
+# tasks file for app-https
+#
+- name: get server ssl from CA
+  get_url:
+    url: http://devops.marekexample.com:5999/certificates/server/{{ inventory_hostname}}/{{ inventory_hostname}}.crt
+    dest: /etc/pki/tls/certs/
+
+- name: get server private key from CA
+  get_url:
+    url: http://devops.marekexample.com:5999/certificates/server/{{ inventory_hostname}}/{{ inventory_hostname}}.key
+    dest: /etc/pki/tls/private/
+    mode: '0600'
+
+- name: install http
+  yum:
+    name: 
+      - httpd
+      - mod_ssl
+    state: present
+
+- name: deploy webserver configuration
+  template:
+    src: https.j2
+    dest: /etc/httpd/conf.d/{{ inventory_hostname}}.conf
+
+- name: restart and enable httpd
+  systemd:
+    name: httpd
+    enabled: yes
+    state: restarted
+

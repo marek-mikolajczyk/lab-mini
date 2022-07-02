@@ -123,3 +123,13 @@
     immediate: yes
   ignore_errors: yes
 
+
+- name: install CA get CA cert
+  get_url:
+    url: http://devops.marekexample.com:5999/CA/ca-marekexample.crt
+    dest: /etc/pki/ca-trust/source/anchors
+
+
+- name: install CA update CA
+  shell: update-ca-trust extract
+

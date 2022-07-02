@@ -9,6 +9,8 @@ linux_packages:
   - net-tools
   - nmap
   - mkisofs
+  - ca-certificates
+  - tree
 
 # centos specific
 # bind-utils

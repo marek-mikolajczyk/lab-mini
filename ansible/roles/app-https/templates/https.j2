@@ -1,0 +1,15 @@
+<VirtualHost *:443>
+	SSLEngine on
+	SSLCertificateFile /etc/pki/tls/certs/{{ inventory_hostname }}.crt
+	SSLCertificateKeyFile /etc/pki/tls/private/{{ inventory_hostname }}.key
+
+
+	DocumentRoot /var/www/{{ inventory_hostname }}
+	ServerName {{ inventory_hostname }}
+	ServerAlias {{ inventory_hostname }}
+
+	<Directory /var/www/{{ inventory_hostname }}>
+		AllowOverride All
+	</Directory>
+
+</VirtualHost>

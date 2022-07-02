@@ -1,0 +1,8 @@
+- name: configure https on tst1
+  hosts: all
+  vars_files:
+    - linux_packages.yml
+  become: true
+  gather_facts: false
+  roles:
+    - name: app-https
