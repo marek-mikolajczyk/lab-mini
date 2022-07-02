@@ -5,6 +5,9 @@ include:
   - local: /pipelines/templates/webserver_simple.yml
     rules:
       - if: $PIPELINE_ACTION == "webserver_simple"
+  - local: /pipelines/templates/certificate_genenerate.yml
+    rules:
+      - if: $PIPELINE_ACTION == "generate_certificate"
 
 #stages:
 #- build
