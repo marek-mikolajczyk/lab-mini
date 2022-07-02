@@ -19,6 +19,10 @@
       - mod_ssl
     state: present
 
+- name: move original ssl.conf
+  shell: mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bkp
+  ignore_errors: true
+
 - name: deploy webserver configuration
   template:
     src: https.j2
