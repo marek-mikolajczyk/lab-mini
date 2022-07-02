@@ -41,3 +41,5 @@ EOF
 openssl req -new -key $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.key \
   -out $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.csr \
   -config $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.cnf
+
+chmod 644 $WEB_DIR/server/"$1".marekexample.com/"$1".marekexample.com.key
