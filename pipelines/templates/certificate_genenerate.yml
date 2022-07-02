@@ -1,0 +1,36 @@
+# this template deploys apache with simple index.html
+# deployment is done via runner to tst or prod server using ssh
+# pipeline uses instance variables, project variables and pipeline variables
+#
+#
+variables:
+    MY_SERVER: 
+
+stages:
+    - build
+    - deploy
+    - test
+
+
+generate_certificate:
+    stage: build
+    environment:
+        name: $MY_ENVIRONMENT
+        url: http://"$MY_ENVIRONMENT"1.marekexample.com
+    before_script:
+        - eval $(ssh-agent -s)
+        - echo "$SSH_AUTOMATION_PRIVKEY" | tr -d '\r' | ssh-add -
+        - mkdir ~/.ssh -p
+        - chmod 700 ~/.ssh
+        - ssh-keyscan "$MY_ENVIRONMENT"1.marekexample.com >> ~/.ssh/known_hosts
+        - chmod 644 ~/.ssh/known_hosts
+    script:
+        - rsync -avrc "pipelines/scripts/generate_certificate.sh"  "$SSH_AUTOMATION_USER"@devops.marekexample.com:/tmp/.
+        - ssh "$SSH_AUTOMATION_USER"@devops.marekexample.com "chmod +x /tmp/generate_certificate.sh ; /tmp/generate_certificate.sh $MY_SERVER"
+
+update_log_www:
+    stage: deploy
+    script:
+        - echo "for project $CI_PROJECT_NAME by $CI_RUNNER_DESCRIPTION at $CI_PIPELINE_CREATED_AT<p>" | sudo tee -a /var/www/html/index.html
+        - echo "$CI_PIPELINE_CREATED_AT generated certificate $GITLAB_PLATFORM" | sudo tee -a /var/www/html/index.html
+
