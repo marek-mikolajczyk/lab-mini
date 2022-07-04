@@ -1,0 +1,6 @@
+- name: configure tools devops server
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - devops-tools

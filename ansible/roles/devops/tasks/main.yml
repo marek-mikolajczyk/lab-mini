@@ -11,6 +11,20 @@
       export {{ item.key | upper }}={{ item.value }}
       {% endfor %}
 
+- name: stop docker-compose apps
+  shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml down
+  loop:
+    - prometheus-grafana
+    - hashicorp-vault
+    - elk
+    - ca-marekexample
+
+
+- name: remove custom containers
+  shell: docker rm -f {{ item }}
+  loop:
+    - ca-marekexample-ca-marekexample-1
+
 - name: prepare devops root dir
   file:
     path: /devops
@@ -24,17 +38,16 @@
     dest: / 
     decrypt: yes
 
-- name: start docker-compose 
+
+- name: rebuild custom containers
+  shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml build
+  loop:
+    - ca-marekexample
+
+- name: start apps
   shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml up -d
   loop:
     - prometheus-grafana
     - hashicorp-vault
     - elk
-
-
-- name: restart docker-compose
-  shell: /usr/local/bin/docker-compose -f /devops/{{ item }}/docker-compose.yml restart
-  loop:
-    - prometheus-grafana
-    - hashicorp-vault
-    - elk
+    - ca-marekexample

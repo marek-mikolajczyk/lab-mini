@@ -1,0 +1,19 @@
+---
+# tasks file for devops-tools
+#
+- name: install powershell repo
+  shell: curl https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
+
+- name: install packer and terraform repo
+  shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo | tee /etc/yum.repos.d/hashicorp.repo
+
+
+- name: install binaries
+  dnf:
+    name:
+      - powershell
+      - packer
+      - terraform 
+      - vault
+    state: latest
+
